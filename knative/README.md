@@ -1,3 +1,9 @@
+# Deploy Knative on a k3d cluster
+
+`REG_URL=<registry-url> make deploy-knative`
+
+# Step by step
+
 ## Install K3d Cluster
 
 `make create-k3d-cluster`
@@ -22,4 +28,6 @@ For this activity you need to have a Registry with a valid certificate.
 
 `REG_URL=<registry-url> make test-knative-python`
 
+List your service:
 
+  `kn service list`

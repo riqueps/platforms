@@ -22,7 +22,7 @@ function install-knative {
 
     echo '...Setting up DNS'
     kubectl apply -f https://github.com/knative/serving/releases/download/knative-v1.13.1/serving-default-domain.yaml
-
+    
     echo '...Install knative net-cert-manager-controller'
     kubectl apply -f https://github.com/knative/net-certmanager/releases/download/knative-v1.13.0/release.yaml
 }

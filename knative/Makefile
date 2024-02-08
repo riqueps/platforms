@@ -2,14 +2,19 @@ export K3D_CLUSTER_NAME ?= k3d-cluster
 export APP_NAME ?= test-app
 export REG_URL ?= registry.domain.com
 
+# Deploy Knative
+
+deploy-knative: 
+	$(MAKE) create-k3d-cluster 
+	$(MAKE) install-cert-manager 
+	$(MAKE) install-knative 
+	$(MAKE) knative-selfsigned-cert 
+	$(MAKE) test-knative-python
+
 # Create K3D cluster
 create-k3d-cluster:
 	k3d cluster create $(K3D_CLUSTER_NAME) --k3s-arg "--disable=traefik@server:0" -p '443:443@loadbalancer'
 	kubectl rollout status deployment metrics-server -n kube-system --timeout=480s
-	
-	# Install Traefik manually
-	# -helm repo add traefik https://helm.traefik.io/traefik && helm repo update
-	# helm install traefik -n traefik --create-namespace  traefik/traefik
 
 # Install Cert-manager
 install-cert-manager:
@@ -19,8 +24,6 @@ install-cert-manager:
 	helm install cert-manager --namespace cert-manager jetstack/cert-manager \
 		--set installCRDs=true \
 		--set extraArgs[0]=--enable-certificate-owner-ref=true
-	
-	kubectl apply -f cluster-issuer.yaml
 
 # Install Knative
 install-knative:
@@ -40,9 +43,10 @@ test-knative-python:
 	kn service create ${APP_NAME} \
 		--image ${REG_URL}/${APP_NAME}:latest \
 		--port 8080 \
-		--env TARGET=World
+		--env TARGET=World \
+		--force
 	
-	sleep 3 && curl -k http://${APP_NAME}.default.172.20.0.2.sslip.io 
+	sleep 3 && curl -k https://${APP_NAME}.default.172.20.0.2.sslip.io
 	@echo "****** test knative serving: succeeded"
 
 # Delete K3d Cluster
