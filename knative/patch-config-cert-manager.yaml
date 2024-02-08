@@ -1,0 +1,4 @@
+data:
+  issuerRef: |
+    kind: ClusterIssuer
+    name: selfsigned-cluster-issuer
