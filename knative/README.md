@@ -16,7 +16,7 @@
 
 `make install-knative`
 
-## Setup SSLip on Knative
+## Setup Selfsigned Certificate on Knative
 
 `make knative-selfsigned-cert`
 
