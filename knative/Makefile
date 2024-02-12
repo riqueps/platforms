@@ -1,6 +1,9 @@
 export K3D_CLUSTER_NAME ?= k3d-cluster
-export APP_NAME ?= test-app
+export APP_NAME ?= kn-test-app
 export REG_URL ?= registry.domain.com
+IP_ADDR := $(shell ifconfig -a | grep "inet " | awk 'NR==1{print $$2}')
+export DOMAIN ?= ${IP_ADDR}.sslip.io
+export NAMESPACE ?= default
 
 # Deploy Knative
 
@@ -46,8 +49,12 @@ test-knative-python:
 		--env TARGET=World \
 		--force
 	
-	sleep 3 && curl -k https://${APP_NAME}.default.172.20.0.2.sslip.io
+	sleep 3 && curl -k https://${APP_NAME}.${NAMESPACE}.${DOMAIN}
 	@echo "****** test knative serving: succeeded"
+
+# Test Conda app - Knative Function
+test-knative-func-python:
+	./scripts/makefile.sh test-knative-func-python
 
 # Delete K3d Cluster
 delete-k3d-cluster:

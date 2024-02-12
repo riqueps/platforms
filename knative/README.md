@@ -31,3 +31,9 @@ For this activity you need to have a Registry with a valid certificate.
 List your service:
 
   `kn service list`
+
+### Deploy via Function
+
+For this activity you need to have a Registry with a valid certificate.
+
+`REG_URL=<registry-url> make test-knative-func-python`

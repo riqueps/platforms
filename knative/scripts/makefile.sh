@@ -34,4 +34,27 @@ function knative-selfsigned-cert {
     echo '...Setting up knative config-network configmap'
     kubectl patch configmap config-network -n knative-serving  --type='merge' -p '{"data": {"external-domain-tls": "Enabled" , "http-protocol": "Redirected"}}'
 }
+
+function test-knative-func-python {
+    cd $(mktemp -d) && git clone --depth=1 https://github.com/paketo-buildpacks/samples && cd samples/python/conda
+    cat <<EOF >>func.yaml
+specVersion: 0.36.0
+name: ${APP_NAME}
+runtime: python
+created: $(date +"%Y-%m-%dT%H:%M:%S.%9NZ")
+build:
+  builder: pack
+deploy:
+  namespace: ${NAMESPACE}
+  healthEndpoints:
+    liveness: /
+    readiness: /
+EOF
+    # Kn function deploy
+    func deploy --registry ${REG_URL} --verbose
+    # Testing
+    sleep 3 && curl -k https://${APP_NAME}.${NAMESPACE}.${DOMAIN}
+	@echo "****** test knative serving: succeeded"
+}
+
 $*
