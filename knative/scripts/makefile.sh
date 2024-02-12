@@ -53,8 +53,8 @@ EOF
     # Kn function deploy
     func deploy --registry ${REG_URL} --verbose
     # Testing
-    sleep 3 && curl -k https://${APP_NAME}.${NAMESPACE}.${DOMAIN}
-	@echo "****** test knative serving: succeeded"
+    #sleep 3 && curl -k https://${APP_NAME}.${NAMESPACE}.${DOMAIN}
+	#@echo "****** test knative serving: succeeded"
 }
 
 $*

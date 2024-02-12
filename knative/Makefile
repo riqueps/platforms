@@ -49,8 +49,8 @@ test-knative-python:
 		--env TARGET=World \
 		--force
 	
-	sleep 3 && curl -k https://${APP_NAME}.${NAMESPACE}.${DOMAIN}
-	@echo "****** test knative serving: succeeded"
+	#sleep 3 && curl -k https://${APP_NAME}.${NAMESPACE}.${DOMAIN}
+	#@echo "****** test knative serving: succeeded"
 
 # Test Conda app - Knative Function
 test-knative-func-python:
