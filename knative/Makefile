@@ -13,6 +13,7 @@ deploy-knative:
 	$(MAKE) install-knative 
 	$(MAKE) knative-selfsigned-cert 
 	$(MAKE) test-knative-python
+	$(MAKE) test-knative-func-python
 
 # Create K3D cluster
 create-k3d-cluster:
