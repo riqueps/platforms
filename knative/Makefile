@@ -1,4 +1,4 @@
-export K3D_CLUSTER_NAME ?= k3d-cluster
+export K3D_CLUSTER_NAME ?= knative-cluster
 export APP_NAME ?= kn-test-app
 export REG_URL ?= registry.domain.com
 IP_ADDR := $(shell ifconfig -a | grep "inet " | awk 'NR==1{print $$2}')
