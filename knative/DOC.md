@@ -1,10 +1,3 @@
-helm install config-syncer \
-  oci://ghcr.io/appscode-charts/config-syncer \
-  --version v0.14.6 \
-  --namespace kubeops --create-namespace \
-  --set-file license=config-syncer-license-c16af861-40ad-4db3-9356-6d4867b29c6e.txt \
-  --wait --burst-limit=10000 --debug
-
 ## Knative CRDs
 
 - kservice
