@@ -26,7 +26,7 @@
 
 For this activity you need to have a Registry with a valid certificate.
 
-`REG_URL=registry.domain.com make test-knative-python`
+`REG_URL=<registry-url> make test-knative-python`
 
 List your service:
 
