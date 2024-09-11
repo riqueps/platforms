@@ -8,7 +8,7 @@ export EP_DEV_USR ?= orbitdev
 export EP_DEV_PWD ?= password
 export DEV_PWD_ENCRYPT := $(shell htpasswd -bnBC 10 "" ${EP_DEV_PWD} | tr -d :)
 IP_ADDR := $(shell ifconfig -a | grep "inet " | awk 'NR==1{print $$2}')
-export GLOBAL_DOMAIN ?= 192.168.3.29.sslip.io
+export GLOBAL_DOMAIN ?= 127.0.0.1.sslip.io
 export TLS_ISSUER ?= selfsigned-issuer
 
 export CHART_NAME ?= 
