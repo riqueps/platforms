@@ -1,0 +1,42 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: allow-from-external
+spec:
+  rules:
+  - name: allow-from-external
+    match:
+      any:
+      - resources:
+          kinds:
+          - Namespace
+    exclude:
+      any:
+      - resources:
+          namespaces:
+          - kube-system
+          - default
+          - kube-public
+          - kyverno
+          - cert-manager
+          - chartmuseum
+          - default
+          - epinio
+          - kube-node-lease
+          - kube-public
+          - kube-system
+          - kyverno
+          - traefik
+          - workspace
+    generate:
+      kind: NetworkPolicy
+      apiVersion: networking.k8s.io/v1
+      name: allow-from-external
+      namespace: "{{request.object.metadata.name}}"
+      data:  
+        spec:
+          podSelector:
+            matchLabels:
+               app.kubernetes.io/component: application
+          ingress:
+          - {}
