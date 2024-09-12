@@ -4,7 +4,7 @@ K3D_CLUSTER_NAME ?= k3d-cluster
 export EP_ADM_USR ?= epadm
 export EP_ADM_PWD ?= password
 export ADM_PWD_ENCRYPT := $(shell htpasswd -bnBC 10 "" ${EP_ADM_PWD} | tr -d :)
-export EP_DEV_USR ?= orbitdev
+export EP_DEV_USR ?= epdev
 export EP_DEV_PWD ?= password
 export DEV_PWD_ENCRYPT := $(shell htpasswd -bnBC 10 "" ${EP_DEV_PWD} | tr -d :)
 IP_ADDR := $(shell ifconfig -a | grep "inet " | awk 'NR==1{print $$2}')
@@ -123,7 +123,7 @@ deploy-chartmuseum:
 		--set ingress.hosts[0].path=/ \
 		--set ingress.hosts[0].tls=true \
 		--set ingress.hosts[0].tlsSecret=chartmuseum-tls \
-		--set ingress.annotations.'cert-manager\.io/cluster-issuer=selfsigned-issuer' \
+		--set ingress.annotations.'cert-manager\.io/cluster-issuer=$(TLS_ISSUER)' \
 		--set env.open.DISABLE_API=false
 
 undeploy-chartmuseum:
@@ -138,3 +138,15 @@ chart-push:
 
 chart-delete:
 	curl -k -X DELETE https://chartmuseum.$(GLOBAL_DOMAIN)/api/charts/$(CHART_NAME)/$(CHART_VERSION)
+
+# Install Grafana
+
+deploy-grafana:
+	-helm repo add grafana https://grafana.github.io/helm-charts
+	helm repo update
+	-kubectl create namespace monitoring
+	helm upgrade grafana grafana/grafana --install --namespace monitoring \
+		--set ingress.enabled=true \
+		--set ingress.hosts[0]=grafana.$(GLOBAL_DOMAIN) \
+		--set ingress.annotations.'cert-manager\.io/cluster-issuer=$(TLS_ISSUER)'
+		
