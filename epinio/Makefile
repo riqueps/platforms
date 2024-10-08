@@ -4,7 +4,7 @@ K3D_CLUSTER_NAME ?= k3d-cluster
 export EP_ADM_USR ?= epadm
 export EP_ADM_PWD ?= password
 export ADM_PWD_ENCRYPT := $(shell htpasswd -bnBC 10 "" ${EP_ADM_PWD} | tr -d :)
-export EP_DEV_USR ?= orbitdev
+export EP_DEV_USR ?= epdev
 export EP_DEV_PWD ?= password
 export DEV_PWD_ENCRYPT := $(shell htpasswd -bnBC 10 "" ${EP_DEV_PWD} | tr -d :)
 IP_ADDR := $(shell ifconfig -a | grep "inet " | awk 'NR==1{print $$2}')
